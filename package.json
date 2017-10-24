@@ -1,0 +1,14 @@
+{
+  "name": "gobang",
+  "version": "1.0.0",
+  "description": "Really small working demo using Node.js as a WebSocket and HttpServer and a simple  client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Frederic Theriault",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^3.2.0"
+  }
+}
