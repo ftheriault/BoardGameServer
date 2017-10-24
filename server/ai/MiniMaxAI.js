@@ -3,49 +3,43 @@ module.exports = MiniMaxAI = function (gameBoard, client) {
 
 	this.miniMax = function (board, depth, maximizeAI) {
 		if (depth == 0) {
-			let freeCells = client.getFreeCells(board);
-			let rndMove = freeCells[Math.floor(Math.random() * freeCells.length)];
 			let state = client.checkBoardState(board);
-			return [rndMove[0], rndMove[1], state[1] - state[0]];
+			return [-1, -1, state[1] - state[0]];
 		}
 		
 		if (maximizeAI) {
+			let bestMove = [0, 0, -100000];
 			let freeCells = client.getFreeCells(board);
-			let rndMove = freeCells[Math.floor(Math.random() * freeCells.length)];
-			let bestMove = [rndMove[0], rndMove[1], -10000];
+			
+			for (let i = 0; i < freeCells.length; i++) {
+				let b = client.copyBoard(board);
+				b[freeCells[i][0]][freeCells[i][1]] = 2;
 
-			for (let i = 0; i < 15; i++) {
-				for (let j = 0; j < 15; j++) {
-					if (board[i][j] == 0) {
-						let b = client.copyBoard(board);
-						b[i][j] = 2;
-						let tmp = this.miniMax(b, depth - 1, false);
+				let tmp = this.miniMax(b, depth - 1, false);
 
-						if (tmp[2] > bestMove[2]) {
-							bestMove = tmp;
-						}
-					}
+				if (tmp[2] > bestMove[2]) {
+					tmp[0] = freeCells[i][0];
+					tmp[1] = freeCells[i][1];
+					bestMove = tmp;
 				}
 			}
 			
 			return bestMove;
 		}
 		else {
+			let bestMove = [0, 0, 1000000];
 			let freeCells = client.getFreeCells(board);
-			let rndMove = freeCells[Math.floor(Math.random() * freeCells.length)];
-			let bestMove = [rndMove[0], rndMove[1], 1000000];
 
-			for (let i = 0; i < 15; i++) {
-				for (let j = 0; j < 15; j++) {
-					if (board[i][j] == 0) {
-						let b = client.copyBoard(board);
-						b[i][j] = 1;
-						let tmp = this.miniMax(b, depth - 1, true);
+			for (let i = 0; i < freeCells.length; i++) {
+				let b = client.copyBoard(board);
+				b[freeCells[i][0]][freeCells[i][1]] = 1;
 
-						if (tmp[2] < bestMove[2]) {
-							bestMove = tmp;
-						}
-					}
+				let tmp = this.miniMax(b, depth - 1, true);
+
+				if (tmp[2] < bestMove[2]) {
+					tmp[0] = freeCells[i][0];
+					tmp[1] = freeCells[i][1];
+					bestMove = tmp;
 				}
 			}
 
@@ -56,7 +50,7 @@ module.exports = MiniMaxAI = function (gameBoard, client) {
 	}
 
 	this.run = function () {
-		let move = this.miniMax(client.copyBoard(gameBoard), 2, true);
+		let move = this.miniMax(client.copyBoard(gameBoard), 3, true);
 		
 		return new Array(move[0], move[1]);
 	}

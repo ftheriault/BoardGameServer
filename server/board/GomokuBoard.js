@@ -32,12 +32,28 @@ module.exports = GomokuBoard = function(client) {
 		return tmp;
 	}
 
+	this.hasAdjacent = function (i, j) {
+		let containsAdj = false;
+
+		for (let x = i - 1; x <= i + 1; x++) {
+			for (let y = j - 1; y <= j + 1; y++) {
+				if (x >= 0 && x < 15 && y >= 0 && y < 15 &&
+					this.gameBoard[x][y] != 0) {
+					containsAdj = true;
+					break;
+				}
+			}
+		}
+
+		return containsAdj;
+	}
+
 	this.getFreeCells = function (board) {
 		let free = [];
 
 		for (let i = 0; i < 15; i++) {
 			for (let j = 0; j < 15; j++) {
-				if (board[i][j] == 0) {
+				if (board[i][j] == 0 && this.hasAdjacent(i, j)) {
 					free.push([i, j]);
 				}
 			}
