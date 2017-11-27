@@ -32,8 +32,8 @@ function appendMessage(message) {
 		let container = document.getElementById("result");
 		container.innerHTML = "";
 
-		for (let i = 0; i < 15; i++) {
-			for (let j = 0; j < 15; j++) {
+		for (let i = 0; i < message.length; i++) {
+			for (let j = 0; j < message[i].length; j++) {
 				let val = message[i][j];
 				let node = document.createElement("div");
 				node.className = "cell";
